@@ -7,16 +7,13 @@ import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,13 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl(getString(R.string.website_url));
 
-        ProgressBar progressBar = findViewById(R.id.showProgress);
-        ImageView imageView = findViewById(R.id.imageView);
-        TextView textView = findViewById(R.id.textView);
-        ConstraintLayout constraintLayout = findViewById(R.id.constraint);
-
-        imageView.setVisibility(ImageView.VISIBLE);
-        textView.setVisibility(TextView.VISIBLE);
+        // Lottie splash animation
+        LottieAnimationView lottieSplash = findViewById(R.id.lottieSplash);
+        lottieSplash.setVisibility(LottieAnimationView.VISIBLE);
+        lottieSplash.playAnimation();
 
         webView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -62,16 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
-                progressBar.setVisibility(ProgressBar.VISIBLE);
+                lottieSplash.setVisibility(LottieAnimationView.VISIBLE);
+                lottieSplash.playAnimation();
                 super.onPageStarted(view, url, favicon);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                progressBar.setVisibility(ProgressBar.GONE);
-                imageView.setVisibility(ImageView.GONE);
-                textView.setVisibility(TextView.GONE);
-                constraintLayout.setVisibility(ConstraintLayout.GONE);
+                lottieSplash.cancelAnimation();
+                lottieSplash.setVisibility(LottieAnimationView.GONE);
                 super.onPageFinished(view, url);
             }
         });
